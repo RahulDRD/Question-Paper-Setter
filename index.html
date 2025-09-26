@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Paper Setter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            position: relative;
+            width: 100%;
+        }
+
+        .header img {
+            height: auto;
+            max-width: 100%;
+            max-height: 150px;
+        }
+
+        .header h1 {
+            margin: 10px 0;
+            font-size: 1.8em;
+            color: #333;
+            font-weight:bold
+        }
+
+        .header subtext {
+            font-size: 1.3em;
+            color: #777;
+            font-weight:500
+        }
+
+        /* Admin Button */
+        .admin-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 15px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-btn:hover {
+            background-color: #3e8e41;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 15px;
+        }
+
+        .modal-header {
+            background-color: #4caf50;
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .nav-tabs .nav-link {
+            color: #4caf50;
+        }
+
+        /* Main Content */
+        .main {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .main h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 40px;
+            font-weight:bold
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+
+        .option {
+            background-color: rgb(255, 255, 255);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            background-color: #eaf2f7c6;
+        }
+
+        .option h3 {
+            font-size: 1.2em;
+            color: #333;
+            margin: 15px 0 0 0;
+        }
+
+        .option svg {
+            width: 50px;
+            height: 50px;
+            fill: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+
+        .footer img {
+            height: auto;
+            max-width: 100%;
+            max-height: 110px;
+        }
+
+        /* Copyright Section */
+        .copyright {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #666;
+            text-align: right;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Table Styles */
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            margin: 5px;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .main h2 {
+                font-size: 1.5em;
+            }
+
+            .option {
+                width: 200px;
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .footer img {
+                max-height: 90px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .option {
+                width: 90%;
+                margin: 10px 0;
+            }
+
+            .header img {
+                height: auto;
+                max-width: 100%;
+            }
+
+            .footer img {
+                max-height: 80px;
+            }
+            
+            .admin-btn {
+                position: static;
+                margin-top: 10px;
+            }
+
+            .copyright {
+                font-size: 10px;
+                bottom: 5px;
+                right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="admin-btn" data-bs-toggle="tooltip" data-bs-placement="left" title="Edit or Delete Department And Subjects">
+        <i class="fas fa-cog"></i> Admin
+        </button>
+
+        <img src="images/bitdurglogo.png" alt="Bhilai Institute of Technology Logo">
+        <h1>BHILAI INSTITUTE OF TECHNOLOGY, DURG (CG)</h1>
+        <subtext>भिलाई प्रौद्योगिकी संस्थान, दुर्ग</subtext>
+    </div>
+
+    <!-- Main Section -->
+    <div class="main">
+        <h2>Welcome to Question Paper Setter</h2>
+        <div class="options">
+            <div class="option" onclick="openlink()">
+                <script>
+                    function openlink(){
+                        window.location.href="./add_ques.php";
+                    }
+                </script>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-6H5v-2h6V5h2v6h6v2h-6v6z"></path></svg>
+                <h3>Add Questions/Subjects</h3>
+            </div>
+
+            <div class="option" onclick="openlink1()">
+                <script>
+                    function openlink1(){
+                        window.location.href="./homeauto.php";
+                    }
+                </script>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 14H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z"></path></svg>
+                <h3>Set Paper Manually</h3>
+            </div>
+
+            <div class="option" onclick="openlink3()">
+                <script>
+                    function openlink3(){
+                        window.location.href="./home.php";
+                    }
+                </script>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7V3H3v4H0v10h3v4h18v-4h3V7h-3zM5 5h14v2H5V5zm14 12H5v-6h14v6z"></path></svg>
+                <h3>Quick Paper</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <img src="images/slogo.png" alt="BIT Logo">
+    </div>
+
+    <!-- Copyright Section -->
+    <div class="copyright">
+        © Design & Developed by<br>
+        Dr. Amit Kumar Biswas and Rahul Kumar Sahu
+    </div>
+
+    <!-- Admin Modal -->
+    <div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adminModalLabel">Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="department-tab" data-bs-toggle="tab" data-bs-target="#department" type="button" role="tab" aria-controls="department" aria-selected="true">Department</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="subject-tab" data-bs-toggle="tab" data-bs-target="#subject" type="button" role="tab" aria-controls="subject" aria-selected="false">Subject</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="adminTabsContent">
+                        <!-- Department Tab -->
+                        <div class="tab-pane fade show active" id="department" role="tabpanel" aria-labelledby="department-tab">
+                            <div class="container mt-3">
+                                <h4>Department Management</h4>
+                                <button class="btn btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">Add Department</button>
+                                <h5 class="mt-4">Existing Departments</h5>
+                                <div class="table-container">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Department Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="deptTableBody">
+                                            <!-- Departments will be loaded here via AJAX -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Subject Tab -->
+                        <div class="tab-pane fade" id="subject" role="tabpanel" aria-labelledby="subject-tab">
+                            <div class="container mt-3">
+                                <h4>Subject Management</h4>
+                                <button class="btn btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Add Subject</button>
+                                <h5 class="mt-4">Existing Subjects</h5>
+                                <div class="table-container">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Department</th>
+                                                <th>Semester</th>
+                                                <th>Subject Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="subjectTableBody">
+                                            <!-- Subjects will be loaded here via AJAX -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Department Modal -->
+    <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDepartmentModalLabel">Add Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDepartmentForm">
+                        <div class="mb-3">
+                            <label for="addDeptName" class="form-label">Department Name</label>
+                            <input type="text" class="form-control" id="addDeptName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Department</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Department Modal -->
+    <div class="modal fade" id="editDepartmentModal" tabindex="-1" aria-labelledby="editDepartmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDepartmentModalLabel">Edit Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editDepartmentForm">
+                        <input type="hidden" id="editDeptId">
+                        <div class="mb-3">
+                            <label for="editDeptName" class="form-label">Department Name</label>
+                            <input type="text" class="form-control" id="editDeptName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Department</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Department Modal -->
+    <div class="modal fade" id="deleteDepartmentModal" tabindex="-1" aria-labelledby="deleteDepartmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteDepartmentModalLabel">Delete Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this department? This will also delete all related subjects and questions.</p>
+                    <input type="hidden" id="deleteDeptId">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteDept">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="addSubjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSubjectModalLabel">Add Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSubjectForm">
+                        <div class="mb-3">
+                            <label for="addSubjectDept" class="form-label">Department</label>
+                            <select class="form-select" id="addSubjectDept" required>
+                                <!-- Departments will be loaded here via AJAX -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addSubjectSem" class="form-label">Semester</label>
+                            <input type="number" class="form-control" id="addSubjectSem" min="1" max="8" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addSubjectName" class="form-label">Subject Name</label>
+                            <input type="text" class="form-control" id="addSubjectName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Subject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Subject Modal -->
+    <div class="modal fade" id="editSubjectModal" tabindex="-1" aria-labelledby="editSubjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSubjectModalLabel">Edit Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSubjectForm">
+                        <input type="hidden" id="editSubjectSno">
+                        <div class="mb-3">
+                            <label for="editSubjectDept" class="form-label">Department</label>
+                            <select class="form-select" id="editSubjectDept" required>
+                                <!-- Departments will be loaded here via AJAX -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSubjectSem" class="form-label">Semester</label>
+                            <input type="number" class="form-control" id="editSubjectSem" min="1" max="8" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSubjectName" class="form-label">Subject Name</label>
+                            <input type="text" class="form-control" id="editSubjectName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Subject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Subject Modal -->
+<div class="modal fade" id="deleteSubjectModal" tabindex="-1" aria-labelledby="deleteSubjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteSubjectModalLabel">Delete Subject</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteSubjectMessage">
+                    Are you sure you want to delete the subject "<span id="deleteSubjectName" class="fw-bold text-danger"></span>"?
+                    This will also delete all related questions.
+                </p>
+                <input type="hidden" id="deleteSubjectSno">
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteSubject">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // Initialize Bootstrap tooltips
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+        // Admin button password protection
+        document.querySelector('.admin-btn').addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default action
+            const password = prompt('Please enter the admin password:');
+            if (password === 'bit123') {
+                // Manually trigger the modal if password is correct
+                var adminModal = new bootstrap.Modal(document.getElementById('adminModal'));
+                adminModal.show();
+            } else {
+                alert('Incorrect password. Access denied.');
+            }
+        });
+
+        // Load departments and subjects when admin modal is shown
+        $('#adminModal').on('show.bs.modal', function () {
+            loadDepartments();
+            loadSubjects();
+        });
+
+        // Function to load departments
+        function loadDepartments() {
+            $.ajax({
+                url: 'get_departments.php',
+                type: 'GET',
+                success: function(response) {
+                    $('#deptTableBody').html(response);
+                    // Populate department dropdowns in subject modals
+                    $.ajax({
+                        url: 'get_department_options.php',
+                        type: 'GET',
+                        success: function(options) {
+                            $('#addSubjectDept').html(options);
+                            $('#editSubjectDept').html(options);
+                        }
+                    });
+                }
+            });
+        }
+
+        // Function to load subjects
+        function loadSubjects() {
+            $.ajax({
+                url: 'get_subjects.php',
+                type: 'GET',
+                success: function(response) {
+                    $('#subjectTableBody').html(response);
+                }
+            });
+        }
+
+        // Add Department Form Submission
+        $('#addDepartmentForm').submit(function(e) {
+            e.preventDefault();
+            const deptName = $('#addDeptName').val();
+            
+            $.ajax({
+                url: 'manage_department.php',
+                type: 'POST',
+                data: {
+                    deptName: deptName,
+                    action: 'add'
+                },
+                success: function(response) {
+                    alert(response.message);
+                    if (response.success) {
+                        loadDepartments();
+                        loadSubjects(); // Refresh subjects to reflect any department changes
+                        $('#addDepartmentForm')[0].reset();
+                        $('#addDepartmentModal').modal('hide');
+                    }
+                },
+                dataType: 'json'
+            });
+        });
+
+        // Edit Department Form Submission
+        $('#editDepartmentForm').submit(function(e) {
+            e.preventDefault();
+            const oldDeptName = $('#editDeptId').val();
+            const newDeptName = $('#editDeptName').val();
+            
+            $.ajax({
+                url: 'manage_department.php',
+                type: 'POST',
+                data: {
+                    oldDeptName: oldDeptName,
+                    newDeptName: newDeptName,
+                    action: 'edit'
+                },
+                success: function(response) {
+                    alert(response.message);
+                    if (response.success) {
+                        loadDepartments();
+                        loadSubjects(); // Refresh subjects to reflect any department changes
+                        $('#editDepartmentForm')[0].reset();
+                        $('#editDepartmentModal').modal('hide');
+                    }
+                },
+                dataType: 'json'
+            });
+        });
+
+        // Delete Department
+        $('#confirmDeleteDept').click(function() {
+            const deptName = $('#deleteDeptId').val();
+            
+            $.ajax({
+                url: 'manage_department.php',
+                type: 'POST',
+                data: {
+                    deptName: deptName,
+                    action: 'delete'
+                },
+                success: function(response) {
+                    alert(response.message);
+                    if (response.success) {
+                        loadDepartments();
+                        loadSubjects(); // Refresh subjects to reflect any department changes
+                        $('#deleteDepartmentModal').modal('hide');
+                        location.reload(); // Refresh the page after deletion
+                    }
+                },
+                dataType: 'json'
+            });
+        });
+
+        // Add Subject Form Submission
+        $('#addSubjectForm').submit(function(e) {
+            e.preventDefault();
+            const dept = $('#addSubjectDept').val();
+            const sem = $('#addSubjectSem').val();
+            const subject = $('#addSubjectName').val();
+            
+            $.ajax({
+                url: 'manage_subject.php',
+                type: 'POST',
+                data: {
+                    department: dept,
+                    sem: sem,
+                    subject: subject,
+                    action: 'add'
+                },
+                success: function(response) {
+                    alert(response.message);
+                    if (response.success) {
+                        loadSubjects();
+                        $('#addSubjectForm')[0].reset();
+                        $('#addSubjectModal').modal('hide');
+                    }
+                },
+                dataType: 'json'
+            });
+        });
+
+        // Edit Subject Form Submission
+        $('#editSubjectForm').submit(function(e) {
+            e.preventDefault();
+            const sno = $('#editSubjectSno').val();
+            const dept = $('#editSubjectDept').val();
+            const sem = $('#editSubjectSem').val();
+            const subject = $('#editSubjectName').val();
+            
+            $.ajax({
+                url: 'manage_subject.php',
+                type: 'POST',
+                data: {
+                    sno: sno,
+                    department: dept,
+                    sem: sem,
+                    subject: subject,
+                    action: 'edit'
+                },
+                success: function(response) {
+                    alert(response.message);
+                    if (response.success) {
+                        loadSubjects();
+                        $('#editSubjectForm')[0].reset();
+                        $('#editSubjectModal').modal('hide');
+                    }
+                },
+                dataType: 'json'
+            });
+        });
+
+        // Delete Subject
+        // When delete button is clicked, populate modal with subject info
+$(document).on('click', '.delete-btn', function () {
+    const sno = $(this).data('sno');
+    const subject = $(this).data('subject');
+
+    $('#deleteSubjectSno').val(sno);
+    $('#deleteSubjectName').text(subject);
+});
+
+// Confirm delete action
+$('#confirmDeleteSubject').click(function () {
+    const sno = $('#deleteSubjectSno').val();
+
+    $.ajax({
+        url: 'manage_subject.php',
+        type: 'POST',
+        data: {
+            sno: sno,
+            action: 'delete'
+        },
+        dataType: 'json',
+        success: function (response) {
+            console.log(response); // For debugging
+            alert(response.message);
+
+            if (response.success === true || response.success === "true") {
+                $('#deleteSubjectModal').modal('hide');
+
+                // Slight delay to allow modal to close before reloading
+                setTimeout(function () {
+                    location.reload();
+                }, 300);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error);
+            alert("An error occurred while deleting.");
+        }
+    });
+});
+
+
+
+        // Function to open Edit Department Modal
+        window.editDepartment = function(deptName) {
+            $('#editDeptId').val(deptName);
+            $('#editDeptName').val(deptName);
+            $('#editDepartmentModal').modal('show');
+        };
+
+        // Function to open Delete Department Modal
+        window.deleteDepartment = function(deptName) {
+            $('#deleteDeptId').val(deptName);
+            $('#deleteDepartmentModal').modal('show');
+        };
+
+        // Function to open Edit Subject Modal
+        window.editSubject = function(sno, dept, sem, subject) {
+            $('#editSubjectSno').val(sno);
+            $('#editSubjectDept').val(dept);
+            $('#editSubjectSem').val(sem);
+            $('#editSubjectName').val(subject);
+            $('#editSubjectModal').modal('show');
+        };
+
+        // Function to open Delete Subject Modal
+        window.deleteSubject = function(sno, subjectName) {
+            $('#deleteSubjectSno').val(sno);
+            $('#deleteSubjectMessage').text(`Are you sure you want to delete the subject "${subjectName}"? This will also delete all related questions.`);
+            $('#deleteSubjectModal').modal('show');
+        };
+
+        // Remove the unused deleteSubjectModal function
+        // window.deleteSubjectModal = function(sno, subjectName) { ... };
+    </script>
+</body>
+</html>
