@@ -843,9 +843,12 @@ app.get('/debug/subjects', async (req, res) => {
 });
 
 const PORT = 9000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+// In serverless (Vercel) we export the app instead of listening
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
 
 // Map GET /something.php to /something.html if present (for legacy links)
 app.get(/^\/(.+)\.php$/, (req, res, next) => {
@@ -860,3 +863,6 @@ app.get(/^\/(.+)\.php$/, (req, res, next) => {
 // work locally the same way they do on Vercel.
 app.use('/images', express.static(path.join(ROOT, 'public', 'images')));
 app.use(express.static(ROOT, { extensions: ['html'] }));
+
+// Export app for serverless platforms (Vercel)
+module.exports = app;
