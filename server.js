@@ -864,5 +864,13 @@ app.get(/^\/(.+)\.php$/, (req, res, next) => {
 app.use('/images', express.static(path.join(ROOT, 'public', 'images')));
 app.use(express.static(ROOT, { extensions: ['html'] }));
 
+// Start server for local development
+const PORT = process.env.PORT || 3000;
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
 // Export app for serverless platforms (Vercel)
 module.exports = app;
