@@ -856,4 +856,7 @@ app.get(/^\/(.+)\.php$/, (req, res, next) => {
 });
 
 // Serve static files from current directory (registered after php->html rewrite)
+// Also expose '/images' from the 'public/images' folder so paths like '/images/...'
+// work locally the same way they do on Vercel.
+app.use('/images', express.static(path.join(ROOT, 'public', 'images')));
 app.use(express.static(ROOT, { extensions: ['html'] }));
