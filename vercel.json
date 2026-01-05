@@ -1,11 +1,8 @@
 {
-  "builds": [
-    { "src": "api/server.js", "use": "@vercel/node" }
+  "rewrites": [
+    { "source": "/(.*)\\.php", "destination": "/api/server.js" }
   ],
   "routes": [
-    { "src": "/(?:(?:[A-Za-z0-9_-]+)\\.php)$", "dest": "/api/server.js" },
-    { "src": "/(.*)\\.php", "dest": "/api/server.js" },
-    { "src": "/images/(.*)", "dest": "/public/images/$1" },
-    { "src": "/(.*)", "dest": "/$1" }
+    { "src": "/images/(.*)", "dest": "/public/images/$1" }
   ]
 }
