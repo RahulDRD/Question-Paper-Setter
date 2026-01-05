@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page - Department & Subjects</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Test Department & Subject Loading</h1>
+    
+    <div>
+        <label>Department:</label>
+        <select id="dept" onchange="loadSubjects()">
+            <option>Loading...</option>
+        </select>
+    </div>
+    
+    <div>
+        <label>Subject:</label>
+        <select id="sub">
+            <option>Select Department First</option>
+        </select>
+    </div>
+    
+    <div id="status"></div>
+    
+    <script>
+        // Load departments
+        $(document).ready(function() {
+            $.ajax({
+                url: 'get_department_options.php',
+                type: 'GET',
+                success: function(options) {
+                    $('#dept').html(options);
+                    $('#status').append('<p>✅ Departments loaded</p>');
+                },
+                error: function(xhr, status, error) {
+                    $('#status').append('<p>❌ Failed to load departments: ' + error + '</p>');
+                }
+            });
+        });
+        
+        // Load subjects when department changes
+        function loadSubjects() {
+            var dept = $('#dept').val();
+            if (dept === 'Select') {
+                $('#sub').html('<option>Select Department First</option>');
+                return;
+            }
+            
+            $.ajax({
+                url: 'sub.php',
+                type: 'POST',
+                data: {department: dept},
+                success: function(options) {
+                    $('#sub').html(options);
+                    $('#status').append('<p>✅ Subjects loaded for ' + dept + '</p>');
+                },
+                error: function(xhr, status, error) {
+                    $('#status').append('<p>❌ Failed to load subjects: ' + error + '</p>');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

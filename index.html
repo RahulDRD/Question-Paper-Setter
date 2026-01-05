@@ -249,7 +249,7 @@
             <div class="option" onclick="openlink()">
                 <script>
                     function openlink(){
-                        window.location.href="./add_ques.php";
+                        window.location.href="./add_ques.html";
                     }
                 </script>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-6H5v-2h6V5h2v6h6v2h-6v6z"></path></svg>
@@ -259,7 +259,7 @@
             <div class="option" onclick="openlink1()">
                 <script>
                     function openlink1(){
-                        window.location.href="./homeauto.php";
+                        window.location.href="./home.html";
                     }
                 </script>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 14H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z"></path></svg>
@@ -269,7 +269,7 @@
             <div class="option" onclick="openlink3()">
                 <script>
                     function openlink3(){
-                        window.location.href="./home.php";
+                        window.location.href="./home.html";
                     }
                 </script>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7V3H3v4H0v10h3v4h18v-4h3V7h-3zM5 5h14v2H5V5zm14 12H5v-6h14v6z"></path></svg>
@@ -283,11 +283,11 @@
         <img src="images/slogo.png" alt="BIT Logo">
     </div>
 
-    <!-- Copyright Section -->
+    <!-- Copyright Section 
     <div class="copyright">
         © Design & Developed by<br>
         Dr. Amit Kumar Biswas and Rahul Kumar Sahu
-    </div>
+    </div>-->
 
     <!-- Admin Modal -->
     <div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
@@ -339,7 +339,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Department</th>
-                                                <th>Semester</th>
                                                 <th>Subject Name</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -438,10 +437,6 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="addSubjectSem" class="form-label">Semester</label>
-                            <input type="number" class="form-control" id="addSubjectSem" min="1" max="8" required>
-                        </div>
-                        <div class="mb-3">
                             <label for="addSubjectName" class="form-label">Subject Name</label>
                             <input type="text" class="form-control" id="addSubjectName" required>
                         </div>
@@ -468,10 +463,6 @@
                             <select class="form-select" id="editSubjectDept" required>
                                 <!-- Departments will be loaded here via AJAX -->
                             </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editSubjectSem" class="form-label">Semester</label>
-                            <input type="number" class="form-control" id="editSubjectSem" min="1" max="8" required>
                         </div>
                         <div class="mb-3">
                             <label for="editSubjectName" class="form-label">Subject Name</label>
@@ -650,7 +641,6 @@
         $('#addSubjectForm').submit(function(e) {
             e.preventDefault();
             const dept = $('#addSubjectDept').val();
-            const sem = $('#addSubjectSem').val();
             const subject = $('#addSubjectName').val();
             
             $.ajax({
@@ -658,7 +648,6 @@
                 type: 'POST',
                 data: {
                     department: dept,
-                    sem: sem,
                     subject: subject,
                     action: 'add'
                 },
@@ -679,7 +668,6 @@
             e.preventDefault();
             const sno = $('#editSubjectSno').val();
             const dept = $('#editSubjectDept').val();
-            const sem = $('#editSubjectSem').val();
             const subject = $('#editSubjectName').val();
             
             $.ajax({
@@ -688,7 +676,6 @@
                 data: {
                     sno: sno,
                     department: dept,
-                    sem: sem,
                     subject: subject,
                     action: 'edit'
                 },
@@ -762,10 +749,9 @@ $('#confirmDeleteSubject').click(function () {
         };
 
         // Function to open Edit Subject Modal
-        window.editSubject = function(sno, dept, sem, subject) {
+        window.editSubject = function(sno, dept, subject) {
             $('#editSubjectSno').val(sno);
             $('#editSubjectDept').val(dept);
-            $('#editSubjectSem').val(sem);
             $('#editSubjectName').val(subject);
             $('#editSubjectModal').modal('show');
         };

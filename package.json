@@ -1,0 +1,29 @@
+{
+  "name": "qpsunit_problem",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"Nothing to build for this Node app\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RahulDRD/Question-Paper-Setter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RahulDRD/Question-Paper-Setter/issues"
+  },
+  "homepage": "https://github.com/RahulDRD/Question-Paper-Setter#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "pg": "^8.16.3"
+  }
+}

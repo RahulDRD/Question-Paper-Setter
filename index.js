@@ -803,26 +803,19 @@ else if(exam_type==="End Sem Exam")
       }
       
     })
-    $('#sem').click(function(){
-      var s=  $("#sem option:selected").text();
-      $('#s').val(s);
-      var d=  $("#dept option:selected").val();
-      var s=  $("#sem option:selected").val();
-      $.post('sub.php',{dep:d,sem:s},function(dta){
-$('#sub').html(dta);
-      })
-    })
-    $('#dept').click(function(){
+          // Use change events; load subjects only on department change
+          $('#sem').change(function(){
+               var s=  $("#sem option:selected").text();
+               $('#s').val(s);
+          })
+          $('#dept').change(function(){
       var d=  $("#dept option:selected").text();
       $('#d').val(d);
-      // var d=  $("#dept option:selected").val();
-      var s=  $("#sem option:selected").val();
-      $.post('sub.php',{dep:d,sem:s},function(dta){
-$('#sub').html(dta);
-      })
+               $.post('sub.php',{dep:d},function(dta){
+                    $('#sub').html(dta);
+               })
     })
-    $('#sub').click(function(){
-     
+    $('#sub').change(function(){
       var subj=$("#sub option:selected").text();
       $('#su').val(subj);
     })
