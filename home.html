@@ -155,7 +155,19 @@
       <script>
         $(document).ready(function() {
           function loadDepartments() {
-            $.ajax({ url: 'get_department_options.php', type: 'GET', success: function(options) { $('#dept').html(options); }, error: function(xhr, status, error) { console.error('AJAX Error:', status, error); alert('Failed to load departments: ' + error); } });
+            console.log('Loading departments...');
+            $.ajax({ 
+              url: 'get_department_options.php', 
+              type: 'GET', 
+              success: function(options) { 
+                console.log('Departments loaded:', options);
+                $('#dept').html(options); 
+              }, 
+              error: function(xhr, status, error) { 
+                console.error('AJAX Error:', status, error, xhr.responseText); 
+                alert('Failed to load departments: ' + error); 
+              } 
+            });
           }
           loadDepartments();
           

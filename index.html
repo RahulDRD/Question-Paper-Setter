@@ -759,7 +759,8 @@ $('#confirmDeleteSubject').click(function () {
         // Function to open Delete Subject Modal
         window.deleteSubject = function(sno, subjectName) {
             $('#deleteSubjectSno').val(sno);
-            $('#deleteSubjectMessage').text(`Are you sure you want to delete the subject "${subjectName}"? This will also delete all related questions.`);
+            $('#deleteSubjectName').text(subjectName);
+            $('#deleteSubjectModal').modal('show');e}"? This will also delete all related questions.`);
             $('#deleteSubjectModal').modal('show');
         };
 
