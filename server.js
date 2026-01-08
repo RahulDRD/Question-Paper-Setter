@@ -8,7 +8,11 @@ const fs = require('fs');
 const { Pool } = require('pg');
 
 // Load env if present
-require('dotenv').config?.();
+try {
+  require('dotenv').config();
+} catch (e) {
+  // dotenv not available, skip
+}
 
 // Prefer env DATABASE_URL else fallback to PHP's baked-in Neon URL
 const FALLBACK_DATABASE_URL = 'postgresql://neondb_owner:npg_ArRJFZ5dx3gf@ep-odd-night-ah0khiik-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&options=endpoint%3Dep-odd-night-ah0khiik';
@@ -842,14 +846,6 @@ app.get('/debug/subjects', async (req, res) => {
   }
 });
 
-const PORT = 9000;
-// In serverless (Vercel) we export the app instead of listening
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-}
-
 // Map GET /something.php to /something.html if present (for legacy links)
 app.get(/^\/(.+)\.php$/, (req, res, next) => {
   const base = req.params[0];
@@ -865,7 +861,7 @@ app.use('/images', express.static(path.join(ROOT, 'public', 'images')));
 app.use(express.static(ROOT, { extensions: ['html'] }));
 
 // Start server for local development
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 9000;
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
