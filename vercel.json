@@ -1,13 +1,17 @@
 {
   "version": 2,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/images/(.*)",
-      "dest": "/public/images/$1"
+      "source": "/images/:path*",
+      "destination": "/public/images/:path*"
     },
     {
-      "src": "/(.*)",
-      "dest": "/api/server"
+      "source": "/:file(index\\.js|jquery\\.toast\\.js|jquery\\.toast\\.css)",
+      "destination": "/public/:file"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/api/server"
     }
   ]
 }

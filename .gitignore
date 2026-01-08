@@ -72,3 +72,5 @@ temp/
 # Exclude local test artifacts
 /.local/
 /test-results/
+.vercel
+.env*.local
